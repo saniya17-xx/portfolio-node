@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body style="background:#0d0d0d; color:white; font-family:sans-serif;">
+
+<h2 style="padding:20px;">Admin Dashboard</h2>
+<a href="/admin/logout" style="margin-left:20px;">Logout</a>
+
+<div id="admin-container">
+
+    <!-- USER LIST -->
+    <div id="user-list-container">
+        <h4>Active Users</h4>
+        <ul id="user-list"></ul>
+    </div>
+
+    <!-- CHAT AREA -->
+    <div id="chat-area">
+        <div id="admin-chat-box"></div>
+
+        <div id="admin-input-area">
+            <input id="admin-input" placeholder="Type reply...">
+            <button onclick="sendAdminMessage()">Send</button>
+        </div>
+    </div>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+socket.emit("registerAdmin");
+
+let selectedUser = null;
+
+// ---------------- USER LIST ----------------
+socket.on("updateUserList", (users) => {
+    const list = document.getElementById("user-list");
+    list.innerHTML = "";
+
+    const savedUser = localStorage.getItem("selectedUser");
+
+    users.forEach((user) => {
+        const li = document.createElement("li");
+        li.innerText = user.name;
+        li.dataset.id = user.id;
+
+        li.addEventListener("click", () => {
+            selectUser(user.id);
+        });
+
+        list.appendChild(li);
+
+        // Restore previously selected user
+        if (savedUser && savedUser === user.id) {
+            selectUser(user.id);
+        }
+    });
+});
+
+
+// ---------------- SELECT USER ----------------
+function selectUser(userId) {
+    selectedUser = userId;
+
+    localStorage.setItem("selectedUser", userId);
+
+    const box = document.getElementById("admin-chat-box");
+    box.innerHTML = "";
+
+    socket.emit("getChatHistory", userId);
+}
+
+// ---------------- LOAD HISTORY ----------------
+socket.on("chatHistoryData", (history) => {
+
+    const box = document.getElementById("admin-chat-box");
+    box.innerHTML = "";
+
+    history.forEach(msg => {
+        const bubble = document.createElement("div");
+        bubble.className = "chat-bubble " + (msg.sender === "Admin" ? "own" : "");
+        bubble.innerHTML = `
+            <strong>${msg.sender}</strong><br>
+            ${msg.message}
+            <div class="time">${msg.time || ""}</div>
+        `;
+        box.appendChild(bubble);
+    });
+
+    box.scrollTop = box.scrollHeight;
+});
+
+// ---------------- RECEIVE LIVE MESSAGE ----------------
+socket.on("adminReceiveMessage", (data) => {
+
+    if (data.from !== selectedUser) return;
+
+    const box = document.getElementById("admin-chat-box");
+
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble";
+    bubble.innerHTML = `
+        <strong>${data.name}</strong><br>
+        ${data.message}
+    `;
+
+    box.appendChild(bubble);
+    box.scrollTop = box.scrollHeight;
+});
+
+// ---------------- SEND ADMIN MESSAGE ----------------
+function sendAdminMessage() {
+
+    if (!selectedUser) {
+        alert("Select a user first");
+        return;
+    }
+
+    const input = document.getElementById("admin-input");
+    const message = input.value;
+
+    if (!message) return;
+
+    socket.emit("adminMessage", {
+        to: selectedUser,
+        message: message
+    });
+
+    const box = document.getElementById("admin-chat-box");
+
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble own";
+    bubble.innerHTML = `
+        <strong>Admin</strong><br>
+        ${message}
+    `;
+
+    box.appendChild(bubble);
+    box.scrollTop = box.scrollHeight;
+
+    input.value = "";
+}
+</script>
+
+</body>
+</html>
