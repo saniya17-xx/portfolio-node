@@ -651,21 +651,13 @@ body {
 
 /* ================= MOBILE RESPONSIVE ================= */
 
+
 @media (max-width: 768px) {
 
-    #admin-container {
-        flex-direction: column;
-        height: auto;
-    }
-
-    #user-list-container {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    #chat-area {
-        height: 70vh;
+    #chat-widget {
+        width: 95vw;
+        right: 2.5vw;
+        bottom: 80px;
     }
 
     #chat-bubble {
@@ -673,14 +665,40 @@ body {
         height: 50px;
         font-size: 20px;
     }
+}
 
-    #chat-widget {
-        width: 90%;
-        right: 5%;
-        bottom: 80px;
+}
+@media (max-width: 768px) {
+
+    .hero {
+        padding: 60px 20px;
+        text-align: center;
     }
 
-    body {
-        font-size: 14px;
+    .hero h1 {
+        font-size: 28px;
+        line-height: 1.3;
     }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    #lottie-container,
+    #robot-animation {
+        width: 200px;
+        margin: 20px auto;
+    }
+}
+@media (max-width: 768px) {
+
+    section {
+        padding: 60px 20px;
+    }
+
+    .projects-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
 }
