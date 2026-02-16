@@ -1,3 +1,18 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+h1 {
+    font-size: clamp(28px, 6vw, 60px);
+}
+
 body {
     margin: 0;
     background: #0b0d12;
@@ -6,6 +21,14 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 
+p {
+    font-size: clamp(14px, 3.5vw, 18px);
+}
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
 
 /* Background animation full screen */
 #background-animation {
@@ -391,7 +414,7 @@ h3 {
     position: fixed;
     bottom: 100px;
     right: 20px;
-    width: 300px;
+    width: min(90vw,350px);
     height: 400px;
     background: #111;
     border-radius: 15px;
