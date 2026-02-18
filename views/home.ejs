@@ -340,6 +340,14 @@ form.addEventListener("submit", async function(e) {
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    document.getElementById("chat-input")
+    .addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
+
 const socket = io();
 let visitorName = "";
 

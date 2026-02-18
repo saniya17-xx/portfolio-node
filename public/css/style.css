@@ -702,3 +702,50 @@ body {
     }
 
 }
+/* ================= LOGIN PAGE ================= */
+
+.login-box {
+    background: rgba(255,255,255,0.05);
+    padding: 40px;
+    border-radius: 20px;
+    width: 320px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(0,247,255,0.3);
+    text-align: center;
+}
+
+.login-box h2 {
+    margin-bottom: 20px;
+    color: #00f7ff;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.login-box input:focus {
+    outline: none;
+    box-shadow: 0 0 10px #00f7ff;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #00f7ff, #0072ff);
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-box button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px #00f7ff;
+}
